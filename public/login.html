@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - S U P P O R T B O T B U I L D E R</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    .glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1)}
+  </style>
+</head>
+<body class="bg-[#0a0a0f] min-h-screen text-white flex items-center justify-center">
+  <div class="w-full max-w-md p-8">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-robot text-3xl"></i>
+      </div>
+      <h1 class="text-3xl font-bold text-white">S U P P O R T B O T B U I L D E R</h1>
+      <p class="text-slate-400 mt-2">AI Email Assistant</p>
+    </div>
+    <div class="glass rounded-2xl p-8">
+      <form id="loginForm" class="space-y-4">
+        <input type="email" id="email" placeholder="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder-slate-500">
+        <input type="password" id="password" placeholder="Password" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder-slate-500">
+        <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-500 to-violet-600 rounded-xl font-semibold">Sign In</button>
+      </form>
+    </div>
+    <div class="mt-8">
+      <h3 class="text-center text-slate-400 mb-4">Choose your plan</h3>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="glass rounded-xl p-4 text-center">
+          <p class="font-bold text-sm">Free</p>
+          <p class="text-xl font-bold text-slate-400">$0</p>
+          <p class="text-xs text-slate-500 mt-1">50 emails/mo</p>
+          <button onclick="subscribe('free')" class="w-full mt-3 py-2 bg-slate-600 rounded-lg text-xs">Get Started</button>
+        </div>
+        <div class="glass rounded-xl p-4 text-center border border-blue-500/50">
+          <p class="font-bold text-sm">Pro</p>
+          <p class="text-xl font-bold text-blue-400">$15</p>
+          <p class="text-xs text-slate-500 mt-1">Unlimited</p>
+          <button onclick="subscribe('price_pro')" class="w-full mt-3 py-2 bg-blue-500 rounded-lg text-xs">Subscribe</button>
+        </div>
+        <div class="glass rounded-xl p-4 text-center border border-purple-500/50">
+          <p class="font-bold text-sm">Team</p>
+          <p class="text-xl font-bold text-purple-400">$49</p>
+          <p class="text-xs text-slate-500 mt-1">5 users</p>
+          <button onclick="subscribe('price_team')" class="w-full mt-3 py-2 bg-purple-500 rounded-lg text-xs">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      localStorage.setItem('isLoggedIn', 'true');
+      window.location.href = 'index.html';
+    });
+    async function subscribe(priceId) {
+      const prices = { 'free': { name: 'Free', amount: 0 }, 'price_pro': { name: 'Pro', amount: 1500 }, 'price_team': { name: 'Team', amount: 4900 } };
+      if(priceId === 'free') { alert('Welcome! You can start with the free plan.'); localStorage.setItem('isLoggedIn', 'true'); window.location.href = 'index.html'; return; }
+      alert('Stripe Checkout: ' + prices[priceId].name + ' - $' + (prices[priceId].amount/100) + '/month\n\nTo enable payments:\n1. Get keys from stripe.com\n2. Replace pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
+    }
+  </script>
+</body>
+</html>
